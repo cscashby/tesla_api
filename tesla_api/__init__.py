@@ -91,7 +91,9 @@ class TeslaApiClient:
         return [Vehicle(self, vehicle) for vehicle in self.get('vehicles')]
 
     def list_energy_sites(self):
-        return [Energy(self, products['energy_site_id']) for products in self.get('products')]
+        prods = self.get('products')
+        energy_items = [item for item in prods if 'energy_site_id' in item]
+        return [Energy(self, item['energy_site_id']) for item in energy_items]
 
 class AuthenticationError(Exception):
     def __init__(self, error):
