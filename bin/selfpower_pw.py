@@ -2,18 +2,21 @@
 
 import os
 import sys
-# This app looks for a folder called .env in the root to find tesla_api folder at that level
-from dotenv import find_dotenv
-sys.path.append(os.path.dirname(find_dotenv()))
+def get_script_path():
+    return os.path.dirname(os.path.realpath(sys.argv[0]))
+
+print(get_script_path() + "/..")
+sys.path.append(get_script_path() + "/..")
 
 from tesla_api import TeslaApiClient
 from tesla_api import AuthenticationError
 from configparser import ConfigParser
 import json
 
+
 def main():
     config = ConfigParser()
-    configpath = os.path.dirname(find_dotenv()) + 'etc/secrets.cfg'
+    configpath = get_script_path() + '/../etc/secrets.cfg'
     print("Reading config from: " + configpath)
     config.read(configpath)
     print("Authenticating: " + config["api"]["email"])
